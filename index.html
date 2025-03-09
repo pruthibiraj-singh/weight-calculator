@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weight & Price Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            max-width: 400px;
+            margin: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input, button {
+            margin: 10px;
+            padding: 10px;
+            width: 90%;
+            font-size: 16px;
+        }
+        button {
+            background-color: blue;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: darkblue;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Weight & Price Calculator</h2>
+        <input type="number" id="pricePerKg" placeholder="Enter price of 1kg (₹)">
+        <input type="number" id="grams" placeholder="Enter grams (g)">
+        <input type="number" id="rupees" placeholder="Enter rupees (₹)">
+        <button onclick="calculate()">Calculate</button>
+        <button onclick="resetFields()">Reset</button>
+        <h3 id="result"></h3>
+    </div>
+
+    <script>
+        function calculate() {
+            let pricePerKg = parseFloat(document.getElementById("pricePerKg").value);
+            let grams = parseFloat(document.getElementById("grams").value);
+            let rupees = parseFloat(document.getElementById("rupees").value);
+
+            if (!isNaN(grams) && !isNaN(rupees) && grams > 0 && rupees > 0) {
+                let ratePerKg = (rupees / grams) * 1000;
+                document.getElementById("result").innerText = `Rate per 1kg is ₹${ratePerKg.toFixed(2)}`;
+            } else if (!isNaN(grams) && isNaN(rupees)) {
+                if (isNaN(pricePerKg) || pricePerKg <= 0) {
+                    document.getElementById("result").innerText = "Please enter a valid price for 1kg.";
+                    return;
+                }
+                let calculatedRupees = (grams / 1000) * pricePerKg;
+                document.getElementById("result").innerText = `Cost for ${grams}g is ₹${calculatedRupees.toFixed(2)}`;
+            } else if (!isNaN(rupees) && isNaN(grams)) {
+                if (isNaN(pricePerKg) || pricePerKg <= 0) {
+                    document.getElementById("result").innerText = "Please enter a valid price for 1kg.";
+                    return;
+                }
+                let calculatedGrams = (rupees / pricePerKg) * 1000;
+                document.getElementById("result").innerText = `For ₹${rupees}, you will get ${calculatedGrams.toFixed(2)}g`;
+            } else {
+                document.getElementById("result").innerText = "Enter valid values for grams or rupees.";
+            }
+        }
+
+        function resetFields() {
+            document.getElementById("pricePerKg").value = "";
+            document.getElementById("grams").value = "";
+            document.getElementById("rupees").value = "";
+            document.getElementById("result").innerText = "";
+        }
+    </script>
+
+</body>
+</html>
